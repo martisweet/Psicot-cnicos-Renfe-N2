@@ -1,4 +1,4 @@
-const BANK = [
+const BASE_BANK = [
 {id:"s1",cat:"series",name:"Series numéricas",level:1,q:"¿Qué número continúa la serie? 2, 4, 6, 8, …",opts:["9","10","11","12"],a:1,why:"La serie aumenta de 2 en 2: 2, 4, 6, 8, 10."},
 {id:"s2",cat:"series",name:"Series numéricas",level:1,q:"Completa la serie: 5, 10, 15, 20, …",opts:["22","24","25","30"],a:2,why:"Cada término aumenta en 5. El siguiente es 25."},
 {id:"s3",cat:"series",name:"Series numéricas",level:2,q:"¿Qué número falta? 3, 6, 12, 24, …",opts:["36","42","48","54"],a:2,why:"Cada término se multiplica por 2: 24 × 2 = 48."},
@@ -30,6 +30,48 @@ const BANK = [
 {id:"a5",cat:"attention",name:"Atención y precisión",level:3,q:"¿Qué pareja de códigos es idéntica?",opts:["NQ-5081 / NQ-5801","LM-7429 / LM-7429","PR-6638 / PR-6683","XT-0194 / XT-0914"],a:1,why:"Solo la pareja LM-7429 / LM-7429 es idéntica."},
 {id:"a6",cat:"attention",name:"Atención y precisión",level:3,q:"¿Cuál de estos códigos contiene dos dígitos iguales consecutivos?",opts:["C-1824","D-4557","E-7319","F-2684"],a:1,why:"En D-4557, los dígitos 5 y 5 aparecen consecutivamente."}
 ];
+
+// Preguntas adicionales originales generadas con parámetros variables.
+const CAT_NAMES={series:"Series numéricas",math:"Cálculo y problemas",logic:"Lógica y deducción",verbal:"Razonamiento verbal",attention:"Atención y precisión"};
+const mix=a=>[...a].sort(()=>Math.random()-.5);
+function makeOpts(c,ds){c=String(c);ds=[...new Set(ds.map(String).filter(x=>x!==c))];while(ds.length<3)ds.push(String(Number(c)+ds.length+2));const o=mix([c,...mix(ds).slice(0,3)]);return {opts:o,a:o.indexOf(c)}}
+function addExtra(out,id,cat,level,q,correct,ds,why){const o=makeOpts(correct,ds);out.push({id,cat,name:CAT_NAMES[cat],level,q,opts:o.opts,a:o.a,why})}
+function buildExtraBank(){
+ const out=[];
+ // 50 series numéricas.
+ for(let i=0;i<50;i++){const lv=1+Math.floor(i/17),t=i%3,start=2+i%15,step=2+i%7;let seq,ans,why;
+ if(t===0){seq=Array.from({length:5},(_,j)=>start+j*step);ans=start+5*step;why=`La serie aumenta de ${step} en ${step}; sigue ${ans}.`}
+ else if(t===1){let n=1+i%5,b=2+i%2;seq=[];for(let j=0;j<5;j++){seq.push(n);n*=b}ans=n;why=`Cada término se multiplica por ${b}; sigue ${ans}.`}
+ else{let k=1+i%8;seq=[1,2,3,4,5].map(x=>x*x+k);ans=36+k;why=`Son cuadrados consecutivos más ${k}; el siguiente es ${ans}.`}
+ addExtra(out,"xs"+i,"series",lv,`¿Qué número continúa la serie? ${seq.join(", ")}, …`,ans,[ans+step,ans-step,ans+2*step,ans+3],why)}
+ // 50 cálculo, porcentajes y velocidad.
+ for(let i=0;i<50;i++){const lv=1+Math.floor(i/17),t=i%4,a=12+(i*7)%89,b=3+(i*3)%17;let q,ans,ds,why;
+ if(t===0){ans=a+b;q=`¿Cuánto es ${a} + ${b}?`;ds=[ans+2,ans-2,a*b,Math.abs(a-b)];why=`${a} + ${b} = ${ans}.`}
+ else if(t===1){const n=a+b;ans=a;q=`Una cantidad de ${n} se reduce en ${b}. ¿Cuánto queda?`;ds=[n,ans-1,ans+1,ans*2];why=`${n} − ${b} = ${ans}.`}
+ else if(t===2){const pct=[5,10,15,20,25][i%5],n=20*((i%9)+1);ans=n*pct/100;q=`¿Cuánto es el ${pct} % de ${n}?`;ds=[ans+pct,ans*2,n-ans,ans+5];why=`${n} × ${pct}/100 = ${ans}.`}
+ else{const d=60*((i%8)+1),h=1+i%4;ans=d/h;q=`Un vehículo recorre ${d} km en ${h} hora(s). ¿Cuál es su velocidad media?`;ds=[ans+10,ans+20,d*h,Math.max(1,ans-10)];why=`Velocidad = ${d} ÷ ${h} = ${ans} km/h.`}
+ addExtra(out,"xm"+i,"math",lv,q,ans,ds,why)}
+ // 50 deducción lógica.
+ const days=["lunes","martes","miércoles","jueves","viernes","sábado","domingo"];
+ for(let i=0;i<50;i++){const lv=1+Math.floor(i/17),t=i%3;let q,ans,ds,why;
+ if(t===0){q="Todos los agentes acreditados llevan identificación. Elena es agente acreditada. ¿Qué se deduce?";ans="Elena lleva identificación";ds=["Elena no lleva identificación","Toda persona identificada es agente","No se puede concluir"];why="La regla se aplica a todos los agentes acreditados, incluida Elena."}
+ else if(t===1){q="En una fila, Luis está delante de Marta y Marta delante de Nico. ¿Quién está más atrás?";ans="Nico";ds=["Luis","Marta","No se puede saber"];why="El orden es Luis, Marta y Nico."}
+ else{const d=days[i%7];q=`Si hoy es ${d}, ¿qué día será dentro de 7 días?`;ans=d;ds=days.filter(x=>x!==d).slice(0,3);why="Siete días equivalen a una semana, por lo que será el mismo día."}
+ addExtra(out,"xl"+i,"logic",lv,q,ans,ds,why)}
+ // 50 ejercicios verbales.
+ const words=[["exacto","preciso","aproximado"],["rápido","veloz","lento"],["habitual","frecuente","excepcional"],["claro","nítido","confuso"],["prudente","cauto","imprudente"],["amplio","extenso","estrecho"],["iniciar","comenzar","finalizar"],["concluir","terminar","empezar"],["escaso","limitado","abundante"],["diligente","aplicado","descuidado"],["sereno","tranquilo","inquieto"],["fiable","seguro","dudoso"],["sencillo","simple","complejo"],["aumentar","incrementar","reducir"],["permitir","autorizar","prohibir"],["observar","examinar","ignorar"],["responder","contestar","preguntar"],["puntual","exacto","tardío"],["cooperar","colaborar","obstaculizar"],["estable","firme","inestable"]];
+ for(let i=0;i<50;i++){const lv=1+Math.floor(i/17),w=words[i%words.length],t=i%2;let q,ans,ds,why;
+ if(t===0){q=`Elige el sinónimo más cercano de «${w[0]}».`;ans=w[1];ds=[w[2],words[(i+4)%20][1],words[(i+7)%20][2]];why=`«${w[0]}» tiene un significado próximo a «${w[1]}».`}
+ else{q=`Elige el antónimo más cercano de «${w[0]}».`;ans=w[2];ds=[w[1],words[(i+3)%20][1],words[(i+6)%20][2]];why=`«${w[2]}» expresa el sentido contrario a «${w[0]}».`}
+ addExtra(out,"xv"+i,"verbal",lv,q,ans,ds,why)}
+ // 50 códigos para comparación visual.
+ const letters="ABCDEFGHJKLMNPQRSTUVWXYZ",code=()=>letters[Math.floor(Math.random()*letters.length)]+letters[Math.floor(Math.random()*letters.length)]+Math.floor(Math.random()*10)+letters[Math.floor(Math.random()*letters.length)]+"-"+Array.from({length:4},()=>Math.floor(Math.random()*10)).join("");
+ for(let i=0;i<50;i++){const lv=1+Math.floor(i/17),c=code(),arr=c.split(""),pos=Math.floor(Math.random()*c.length);if(arr[pos]==="-")arr[(pos+1)%c.length]=arr[(pos+1)%c.length]==="9"?"8":"9";else arr[pos]=arr[pos]==="9"?"8":String((Number(arr[pos])+1)%10);const bad=arr.join(""),bad2=c.slice(0,-1)+(c.endsWith("9")?"8":"9"),bad3=(c[0]==="Z"?"A":String.fromCharCode(c.charCodeAt(0)+1))+c.slice(1);
+ addExtra(out,"xa"+i,"attention",lv,`¿Qué código coincide exactamente con ${c}?`,c,[bad,bad2,bad3],`Compara todos los caracteres y su orden. El código idéntico es ${c}.`)}
+ return out;
+}
+const BANK=[...BASE_BANK,...buildExtraBank()];
+
 const CAT_LABEL={series:"Series numéricas",math:"Cálculo y problemas",logic:"Lógica y deducción",verbal:"Razonamiento verbal",attention:"Atención y precisión"};
 const $=id=>document.getElementById(id);
 let session=[],idx=0,answers=[],startedAt=0,tick=null,levelMode="adaptive",currentLevel=1,correctStreak=0,wrongStreak=0,answered=false;

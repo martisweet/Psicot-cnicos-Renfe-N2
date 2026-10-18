@@ -1,6 +1,7 @@
 PSICOTÉCNICOS RENFE N2 — PRIMERA VERSIÓN
 
 Qué incluye
+- Banco de 280 preguntas de práctica en total (30 iniciales y 250 adicionales generadas con variantes).
 - Entrenamiento por áreas: series numéricas, cálculo, lógica, razonamiento verbal y atención.
 - Simulacro mixto con preguntas aleatorias.
 - Niveles inicial, intermedio, avanzado y progresivo.
