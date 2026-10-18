@@ -1,0 +1,40 @@
+PSICOTÉCNICOS RENFE N2 — PRIMERA VERSIÓN
+
+Qué incluye
+- Entrenamiento por áreas: series numéricas, cálculo, lógica, razonamiento verbal y atención.
+- Simulacro mixto con preguntas aleatorias.
+- Niveles inicial, intermedio, avanzado y progresivo.
+- Corrección inmediata y explicación de cada respuesta.
+- Temporizador, resultados y repaso de errores.
+- Registro local de resultados en el navegador.
+- PWA preparada para instalarse y funcionar sin conexión tras la primera carga.
+
+IMPORTANTE
+Esta app es una herramienta independiente de práctica. No es oficial de Renfe.
+Las preguntas son originales y no se garantiza que coincidan con la prueba real.
+Antes de preparar la convocatoria, contrasta los tipos de pruebas con las bases oficiales vigentes.
+
+CÓMO PROBARLA EN ORDENADOR
+1. Descomprime el ZIP.
+2. Abre index.html para probar el entrenamiento básico. Algunas funciones de instalación/offline requieren servirla por HTTP/HTTPS.
+
+CÓMO INSTALARLA EN EL MÓVIL
+La instalación como PWA requiere publicar estos archivos en una web HTTPS.
+Opción sencilla:
+1. Crea un repositorio en GitHub y sube todos los archivos de esta carpeta.
+2. En Settings > Pages, activa GitHub Pages para la rama principal.
+3. Abre la URL HTTPS generada desde Chrome en Android.
+4. En el menú de Chrome, elige “Instalar aplicación” o “Añadir a pantalla de inicio”.
+5. Abre la app una vez conectada para que se guarden los archivos y luego podrás usar las funciones principales sin conexión.
+
+Alternativa: publicar la carpeta en un servicio de hosting estático HTTPS como Netlify.
+
+DATOS Y PRIVACIDAD
+El progreso se guarda en localStorage del navegador de ese dispositivo. No se envía a un servidor.
+Si borras los datos del navegador, se pierde el progreso.
+
+SIGUIENTES MEJORAS RECOMENDADAS
+- Ampliar el banco a cientos de preguntas revisadas.
+- Añadir dificultad adaptativa más completa por área.
+- Incorporar un modo de examen con penalización/tiempo configurable si las bases oficiales lo requieren.
+- Contrastar el temario y la estructura con la convocatoria concreta de Renfe.

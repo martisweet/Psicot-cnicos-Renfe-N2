@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7b1725">
+<meta name="description" content="Entrenamiento progresivo de psicotécnicos para preparar Operador Comercial de Ingreso N2 de Renfe.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Psicotécnicos Renfe N2</title>
+<style>
+:root{--red:#7b1725;--red2:#a52a3a;--ink:#202124;--muted:#666b73;--bg:#f4f5f7;--card:#fff;--line:#e2e4e8;--good:#137547;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--red);color:#fff;padding:20px 18px 24px;border-radius:0 0 22px 22px}
+.wrap{max-width:760px;margin:auto}header .eyebrow{font-size:.78rem;opacity:.85;letter-spacing:.08em;text-transform:uppercase}h1{font-size:1.55rem;line-height:1.15;margin:7px 0}header p{margin:8px 0 0;opacity:.9;font-size:.94rem}
+main{padding:16px;max-width:760px;margin:auto}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 16px}
+button,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 14px;font-weight:650}
+.tab{background:#e8e9ed;color:#41444a;padding:10px 6px;font-size:.88rem}.tab.active{background:var(--red);color:white}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 2px 7px #00000006}
+h2{font-size:1.13rem;margin:0 0 10px}h3{font-size:1rem;margin:0 0 8px}.muted{color:var(--muted);font-size:.9rem;line-height:1.45}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.stat{background:#ffffff18;border:1px solid #ffffff2e;border-radius:12px;padding:10px}.stat b{display:block;font-size:1.2rem}.stat span{font-size:.75rem;opacity:.9}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.primary{background:var(--red);color:white}.secondary{background:#eeeef1;color:#25272b}.outline{background:white;border:1px solid var(--line);color:var(--ink)}
+.field{display:block;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:white;margin:7px 0 12px}
+.progress{height:8px;background:#ececf0;border-radius:99px;overflow:hidden;margin:12px 0}.progress div{height:100%;background:var(--red);width:0;transition:width .2s}
+.question-top{display:flex;justify-content:space-between;gap:8px;align-items:center;color:var(--muted);font-size:.84rem}
+.question{font-size:1.15rem;font-weight:700;line-height:1.45;margin:18px 0}
+.options{display:grid;gap:9px}.option{background:#fff;border:1px solid #d8dbe1;text-align:left;font-weight:500;display:flex;gap:10px;align-items:center}.option .letter{width:28px;height:28px;display:grid;place-items:center;background:#f0f1f4;border-radius:8px;font-weight:750;flex-shrink:0}.option.selected{border-color:var(--red);background:#fff7f8}.option.correct{border-color:var(--good);background:#effaf4}.option.wrong{border-color:var(--bad);background:#fff3f2}
+.feedback{border-radius:12px;padding:12px;margin-top:12px;font-size:.93rem;line-height:1.45}.feedback.good{background:#effaf4;color:#155d3b}.feedback.bad{background:#fff3f2;color:#8e211a}
+.hidden{display:none!important}.pill{display:inline-block;border-radius:99px;background:#f1e5e7;color:var(--red);font-size:.77rem;font-weight:700;padding:5px 9px}
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.topic{border:1px solid var(--line);background:white;border-radius:14px;padding:13px;text-align:left}.topic b{display:block;margin-bottom:4px}.topic small{color:var(--muted)}
+.result-score{font-size:2.4rem;font-weight:800;color:var(--red)}.history-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);gap:10px;font-size:.9rem}
+footer{text-align:center;color:var(--muted);font-size:.78rem;padding:12px 18px 30px}
+@media(min-width:600px){header{padding:26px 24px 28px}main{padding:22px}.question{font-size:1.28rem}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">Entrenamiento personal</div>
+<h1>Psicotécnicos Renfe N2</h1>
+<p>Preparación progresiva para Operador Comercial de Ingreso N2.</p>
+<div class="stats">
+<div class="stat"><b id="statDone">0</b><span>preguntas respondidas</span></div>
+<div class="stat"><b id="statAccuracy">—</b><span>aciertos</span></div>
+<div class="stat"><b id="statStreak">0</b><span>racha actual</span></div>
+</div>
+</div></header>
+<main>
+<nav class="tabs" aria-label="Secciones">
+<button class="tab active" data-tab="home">Entrenar</button>
+<button class="tab" data-tab="progress">Mi progreso</button>
+<button class="tab" data-tab="about">Cómo usarla</button>
+</nav>
+
+<section id="home">
+<div class="card" id="setup">
+<h2>Elige tu entrenamiento</h2>
+<p class="muted">Empieza por nivel inicial. La dificultad aumenta según tus resultados. Las preguntas son ejercicios originales de práctica, no preguntas oficiales de Renfe.</p>
+<label for="mode">Modalidad</label>
+<select class="field" id="mode">
+<option value="mixed">Simulacro mixto</option>
+<option value="series">Series numéricas</option>
+<option value="math">Cálculo y problemas</option>
+<option value="logic">Lógica y deducción</option>
+<option value="verbal">Razonamiento verbal</option>
+<option value="attention">Atención y precisión</option>
+</select>
+<label for="count">Número de preguntas</label>
+<select class="field" id="count"><option>10</option><option>15</option><option>20</option></select>
+<label for="level">Nivel inicial</label>
+<select class="field" id="level"><option value="1">Inicial</option><option value="2">Intermedio</option><option value="3">Avanzado</option><option value="adaptive" selected>Progresivo (recomendado)</option></select>
+<div class="actions"><button class="primary" id="startBtn">Empezar práctica</button></div>
+</div>
+<div class="card">
+<h2>Áreas de práctica</h2>
+<div class="topic-grid">
+<button class="topic" data-mode="series"><b>Series numéricas</b><small>Patrones y secuencias</small></button>
+<button class="topic" data-mode="math"><b>Cálculo</b><small>Operaciones y porcentajes</small></button>
+<button class="topic" data-mode="logic"><b>Lógica</b><small>Deducción y relaciones</small></button>
+<button class="topic" data-mode="verbal"><b>Verbal</b><small>Sinónimos y comprensión</small></button>
+<button class="topic" data-mode="attention"><b>Atención</b><small>Comparación de códigos</small></button>
+<button class="topic" data-mode="mixed"><b>Simulacro mixto</b><small>Varias aptitudes</small></button>
+</div>
+</div>
+</section>
+
+<section id="quiz" class="hidden">
+<div class="card">
+<div class="question-top"><span id="qCounter">Pregunta 1 de 10</span><span id="qLevel" class="pill">Nivel inicial</span><span id="timer">00:00</span></div>
+<div class="progress"><div id="progressBar"></div></div>
+<div id="qCategory" class="muted"></div>
+<div id="qText" class="question"></div>
+<div id="options" class="options"></div>
+<div id="feedback" class="feedback hidden" aria-live="polite"></div>
+<div class="actions" style="margin-top:16px"><button id="nextBtn" class="primary hidden">Siguiente</button><button id="quitBtn" class="secondary">Terminar práctica</button></div>
+</div>
+</section>
+
+<section id="results" class="hidden">
+<div class="card">
+<span class="pill">Práctica terminada</span>
+<h2 style="margin-top:12px">Resultado del entrenamiento</h2>
+<div class="result-score" id="finalScore">0%</div>
+<p id="resultSummary" class="muted"></p>
+<div class="stats" style="color:var(--ink)">
+<div class="stat" style="background:#f5f5f7;border-color:var(--line)"><b id="finalCorrect">0</b><span>Aciertos</span></div>
+<div class="stat" style="background:#f5f5f7;border-color:var(--line)"><b id="finalWrong">0</b><span>Errores</span></div>
+<div class="stat" style="background:#f5f5f7;border-color:var(--line)"><b id="finalTime">0:00</b><span>Tiempo</span></div>
+</div>
+<h3 style="margin-top:18px">Repaso de errores</h3><div id="mistakes"></div>
+<div class="actions" style="margin-top:18px"><button class="primary" id="againBtn">Otro entrenamiento</button><button class="secondary" id="progressBtn">Ver progreso</button></div>
+</div>
+</section>
+
+<section id="progress" class="hidden">
+<div class="card"><h2>Mi progreso</h2><p class="muted">Los datos se guardan en este dispositivo y en este navegador.</p>
+<div class="stats" style="color:var(--ink)">
+<div class="stat" style="background:#f5f5f7;border-color:var(--line)"><b id="pSessions">0</b><span>Sesiones</span></div>
+<div class="stat" style="background:#f5f5f7;border-color:var(--line)"><b id="pAnswered">0</b><span>Preguntas</span></div>
+<div class="stat" style="background:#f5f5f7;border-color:var(--line)"><b id="pAccuracy">—</b><span>Acierto global</span></div>
+</div><h3 style="margin-top:20px">Últimas sesiones</h3><div id="history"></div>
+<div class="actions" style="margin-top:16px"><button id="resetProgress" class="outline">Borrar progreso</button><button class="primary" id="backHome">Seguir entrenando</button></div></div>
+</section>
+<section id="about" class="hidden">
+<div class="card"><h2>Cómo aprovecharla</h2>
+<ol><li>Practica a diario en sesiones cortas de 10–15 preguntas.</li><li>Lee la explicación tras cada respuesta; no memorices solo la opción correcta.</li><li>Cuando consigas más del 80 % en un área, sube el nivel.</li><li>Repite los bloques en los que acumules más errores.</li></ol>
+<p class="muted"><b>Importante:</b> esta primera versión es una herramienta de práctica con preguntas originales. No es una app oficial de Renfe ni garantiza que el examen real use estos mismos tipos de ejercicios. Contrasta el temario y el formato con las bases oficiales de tu convocatoria.</p>
+<h3>Instalación</h3><p class="muted">Para instalarla como app, los archivos deben publicarse en una dirección HTTPS. Consulta el archivo LEEME incluido en el paquete.</p>
+</div>
+</section>
+</main>
+<footer>Versión inicial · Uso educativo · No oficial de Renfe</footer>
+<script src="app.js"></script>
+</body>
+</html>
